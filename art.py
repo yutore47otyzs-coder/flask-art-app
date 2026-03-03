@@ -1,10 +1,9 @@
 import os
 from flask import Flask, request, redirect, render_template, flash
 from werkzeug.utils import secure_filename
-from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.preprocessing.image import smart_resize
+from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.vgg16 import preprocess_input
+from tensorflow.keras.preprocessing import image
 import numpy as np
 
 classes = [
@@ -67,6 +66,5 @@ def upload_file():
 
 if __name__ == "__main__":
     # Renderではポート番号を環境変数から取得する必要があります
-    # port = int(os.environ.get("PORT", 10000))
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
