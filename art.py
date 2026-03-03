@@ -5,6 +5,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.vgg16 import preprocess_input
 from tensorflow.keras.preprocessing import image
 import numpy as np
+import gc  # ガベージコレクション（メモリ掃除）
+import tensorflow as tf
 
 classes = [
     "claude-monet",
@@ -13,7 +15,7 @@ classes = [
     "salvador-dali",
     "vincent-van-gogh",
 ]
-image_size = 224
+image_size = 448
 
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
@@ -23,6 +25,9 @@ app = Flask(__name__)
 
 # submitボタンを押した際にエラーが出た場合上の行のコメントアウトを削除し、your_secret_key_hereに任意の文字列を指定し、再度アプリケーションを実行してください。
 app.secret_key = "art_app"
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 
 def allowed_file(filename):
@@ -56,6 +61,13 @@ def upload_file():
             data = preprocess_input(np.array([img]))
             # 変換したデータをモデルに渡して予測する
             result = model.predict(data)[0]
+
+            # --- ここから追加 ---
+            del data  # 使い終わったデータを消す
+            gc.collect()  # メモリを強制的に掃除
+            tf.keras.backend.clear_session()  # TensorFlowの作業領域をリセット
+            # --- ここまで追加 ---
+
             predicted = result.argmax()
             pred_answer = "これは " + classes[predicted] + " です"
 
