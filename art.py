@@ -60,7 +60,9 @@ def upload_file():
 
             data = preprocess_input(np.array([img]))
             # 変換したデータをモデルに渡して予測する
-            result = model.predict(data)[0]
+            predictions = model(data, training=False)
+            result = predictions.numpy()[0]
+            # result = model.predict(data)[0]
 
             # --- ここから追加 ---
             del data  # 使い終わったデータを消す
