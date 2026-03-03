@@ -13,7 +13,7 @@ classes = [
     "salvador-dali",
     "vincent-van-gogh",
 ]
-image_size = 448
+image_size = 224
 
 UPLOAD_FOLDER = "uploads"
 ALLOWED_EXTENSIONS = set(["png", "jpg", "jpeg", "gif"])
