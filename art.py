@@ -8,6 +8,9 @@ import numpy as np
 import gc  # ガベージコレクション（メモリ掃除）
 import tensorflow as tf
 
+# 「使えるGPUは一つもない（空のリスト）」と定義する
+tf.config.set_visible_devices([], "GPU")
+
 classes = [
     "claude-monet",
     "pablo-picasso",
